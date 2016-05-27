@@ -1,0 +1,19 @@
+group 'com.viifly.taste'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://4thline.org/m2"
+    }
+}
+
+dependencies {
+    compile group: "org.fourthline.cling", name:"cling-core", version: "2.1.1-SNAPSHOT"
+    compile group:"org.fourthline.cling", name:"cling-support", version:"2.0.1"
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
