@@ -1,4 +1,4 @@
-package com.viifly.taste.nat;
+package com.viifly.taste;
 
 import org.fourthline.cling.controlpoint.ActionCallback;
 import org.fourthline.cling.model.action.ActionArgumentValue;

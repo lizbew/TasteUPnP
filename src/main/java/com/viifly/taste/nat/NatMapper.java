@@ -1,25 +1,17 @@
 package com.viifly.taste.nat;
 
+import com.viifly.taste.GenericQueryAction;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
-import org.fourthline.cling.controlpoint.ActionCallback;
-import org.fourthline.cling.model.action.ActionInvocation;
-import org.fourthline.cling.model.message.UpnpResponse;
 import org.fourthline.cling.model.meta.Action;
 import org.fourthline.cling.model.meta.Device;
-import org.fourthline.cling.model.meta.RemoteDevice;
 import org.fourthline.cling.model.meta.Service;
-import org.fourthline.cling.registry.DefaultRegistryListener;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.registry.RegistryListener;
 import org.fourthline.cling.support.igd.PortMappingListener;
-import org.fourthline.cling.support.igd.callback.GetExternalIP;
-import org.fourthline.cling.support.igd.callback.GetStatusInfo;
-import org.fourthline.cling.support.model.Connection;
 import org.fourthline.cling.support.model.PortMapping;
 
-import java.net.*;
-import java.util.Enumeration;
+import com.viifly.taste.Utils;
 
 public class NatMapper implements Runnable {
     protected int mapPort = 8201;
@@ -27,7 +19,7 @@ public class NatMapper implements Runnable {
 
     public static void main(String[] args) {
         NatMapper natMapper = new NatMapper();
-        natMapper.mapIP = natMapper.getLocalIP();
+        natMapper.mapIP = Utils.getLocalIP();
         new Thread(natMapper).start();
 
         try {
@@ -131,48 +123,4 @@ public class NatMapper implements Runnable {
         */
     }
 
-    private String getLocalIP() {
-        Enumeration<NetworkInterface> allInterface = null;
-        Inet4Address ipAddr = null;
-        try {
-            allInterface = NetworkInterface.getNetworkInterfaces();
-            while (allInterface.hasMoreElements()) {
-                NetworkInterface netIf = allInterface.nextElement();
-
-                //System.out.println(String.format("%s, %s", netIf.getName(), netIf.getDisplayName()) );
-
-                Enumeration<InetAddress> addressEnumeration = netIf.getInetAddresses();
-                while (addressEnumeration.hasMoreElements()) {
-                    InetAddress addr = addressEnumeration.nextElement();
-                    if (addr != null && addr instanceof Inet4Address){
-                        //System.out.println("loopback " + netIf.isLoopback() + ", " +netIf.isUp()+ ", " +netIf.isVirtual());
-                        //System.out.println(addr.getHostAddress());
-                        if (!netIf.isLoopback() && !netIf.getDisplayName().contains("VirtualBox")) {
-                            ipAddr = (Inet4Address)addr;
-                            break;
-                        }
-                    }
-                }
-                if (ipAddr != null) {
-                    break;
-                }
-            }
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-        return ipAddr.getHostAddress();
-    }
-
-    public String getIP2() {
-        String ip = null;
-        try {
-            InetAddress address = InetAddress.getLocalHost();
-            System.out.println("hostName: " +address.getHostName() + ", hostAddress: " + address.getHostAddress());
-            ip = address.getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        };
-
-        return ip;
-    }
 }
