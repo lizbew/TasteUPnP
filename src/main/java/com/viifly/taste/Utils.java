@@ -5,7 +5,24 @@ import java.net.*;
 import java.util.Enumeration;
 
 public class Utils {
+
+    public static String getLocalHostName() {
+        Inet4Address address = getLocalInetAddress();
+        if (address != null) {
+            return address.getHostName();
+        }
+        return "unknown-host";
+    }
+
     public static String getLocalIP() {
+        Inet4Address address = getLocalInetAddress();
+        if (address != null) {
+            return address.getHostAddress();
+        }
+        return null;
+    }
+
+    public static Inet4Address getLocalInetAddress() {
         Enumeration<NetworkInterface> allInterface = null;
         Inet4Address ipAddr = null;
         try {
@@ -34,7 +51,7 @@ public class Utils {
         } catch (SocketException e) {
             e.printStackTrace();
         }
-        return ipAddr.getHostAddress();
+        return ipAddr;
     }
 
     public static String getIP2() {

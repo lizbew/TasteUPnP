@@ -1,5 +1,6 @@
 package com.viifly.taste.fileshare;
 
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 import com.viifly.taste.Utils;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
@@ -110,7 +111,8 @@ public class FshareMain implements Runnable {
 
         DeviceType type = new UDADeviceType("FileShare", 1);
 
-        DeviceDetails details = new DeviceDetails("FileShare Manager",
+        String deviceName = "FileShare - " + Utils.getLocalHostName();
+        DeviceDetails details = new DeviceDetails(deviceName,
                 new ManufacturerDetails("Taste"),
                 new ModelDetails("FileShare V1"));
 

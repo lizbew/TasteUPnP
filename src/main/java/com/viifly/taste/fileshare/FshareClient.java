@@ -32,7 +32,7 @@ public class FshareClient extends AbstractDiscoveryClient {
 
             @Override
             public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
-
+                System.out.println("Device name: " + device.getDetails().getFriendlyName());
                 Service uploadService;
                 if ((uploadService = device.findService(serviceId)) != null) {
 
