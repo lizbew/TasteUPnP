@@ -1,6 +1,5 @@
 package com.viifly.taste.fileshare;
 
-import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 import com.viifly.taste.Utils;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
@@ -13,14 +12,13 @@ import org.fourthline.cling.model.types.DeviceType;
 import org.fourthline.cling.model.types.UDADeviceType;
 import org.fourthline.cling.model.types.UDN;
 
-
 import java.io.IOException;
 import java.util.Random;
 
 public class FshareMain implements Runnable {
     private NanoFileUploadServer httpServer;
 
-    private static Config config ;
+    private static Config config;
 
     public static Config getConfig() {
         if (config == null) {
@@ -35,6 +33,8 @@ public class FshareMain implements Runnable {
 
     public static void main(String[] args) {
         FshareMain fshare = new FshareMain();
+        System.out.println("Config IP:" + getConfig().localIP + ", port:"+ getConfig().serverPort );
+
         fshare.startHttpServer();
         new Thread(fshare).start();
     }
@@ -62,7 +62,7 @@ public class FshareMain implements Runnable {
     private void startHttpServer() {
         httpServer = new NanoFileUploadServer(FshareMain.getConfig().serverPort, FshareMain.getConfig().storageDir);
         try {
-            Runtime.getRuntime().addShutdownHook(new Thread(){
+            Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
                 public void run() {
                     httpServer.stop();
@@ -125,8 +125,13 @@ public class FshareMain implements Runnable {
     public int getServerPort() {
         Random random = new Random();
         int p = 8001 + random.nextInt(100);
+        int t = 1;
         while (!Utils.checkPortAvalable(p)) {
             p = 8001 + random.nextInt(100);
+            ++t;
+            if (t > 5) {
+                break;
+            }
         }
         return p;
     }

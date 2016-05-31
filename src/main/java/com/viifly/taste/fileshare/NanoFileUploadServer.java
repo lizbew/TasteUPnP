@@ -43,6 +43,7 @@ public class NanoFileUploadServer extends NanoHTTPD {
 
     private boolean saveFileItemToDisk(FileItem fileItem) {
         try {
+            System.out.println("Received file " +  fileItem.getName());
             String name = new File(fileItem.getName()).getName();
             File dirFile = new File(localStoreDir);
             if (!dirFile.exists()) {
@@ -50,8 +51,7 @@ public class NanoFileUploadServer extends NanoHTTPD {
             }
             File f = new File(dirFile, name);
             fileItem.write(f);
-        }
-        catch(Exception ex) {
+        } catch(Exception ex) {
             ex.printStackTrace();
             return false;
         }
