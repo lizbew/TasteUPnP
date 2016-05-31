@@ -12,6 +12,29 @@ repositories {
     }
 }
 
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Fshare Sever',
+                'Implementation-Version': version,
+                'Main-Class': 'com.viifly.taste.fileshare.FshareMain'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Fshare Sever',
+                'Implementation-Version': version,
+                'Main-Class': 'com.viifly.taste.fileshare.FshareMain'
+    }
+
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 dependencies {
     compile group: "org.fourthline.cling", name:"cling-core", version: "2.1.1-SNAPSHOT"
     compile group:"org.fourthline.cling", name:"cling-support", version:"2.0.1"
